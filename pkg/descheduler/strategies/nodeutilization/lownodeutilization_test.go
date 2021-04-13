@@ -35,12 +35,6 @@ import (
 	"sigs.k8s.io/descheduler/test"
 )
 
-var (
-	lowPriority      = int32(0)
-	highPriority     = int32(10000)
-	extendedResource = v1.ResourceName("example.com/foo")
-)
-
 func TestLowNodeUtilization(t *testing.T) {
 	ctx := context.Background()
 	n1NodeName := "n1"
@@ -598,7 +592,7 @@ func TestLowNodeUtilization(t *testing.T) {
 	}
 }
 
-func TestValidateStrategyConfig(t *testing.T) {
+func TestValidateLowNodeUtilizationStrategyConfig(t *testing.T) {
 	tests := []struct {
 		name             string
 		thresholds       api.ResourceThresholds
@@ -738,7 +732,7 @@ func TestValidateStrategyConfig(t *testing.T) {
 	}
 
 	for _, testCase := range tests {
-		validateErr := validateStrategyConfig(testCase.thresholds, testCase.targetThresholds)
+		validateErr := validateLowUtilizationStrategyConfig(testCase.thresholds, testCase.targetThresholds)
 
 		if validateErr == nil || testCase.errInfo == nil {
 			if validateErr != testCase.errInfo {
@@ -751,8 +745,6 @@ func TestValidateStrategyConfig(t *testing.T) {
 		}
 	}
 }
-
-
 
 func TestWithTaints(t *testing.T) {
 	ctx := context.Background()

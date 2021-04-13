@@ -25,6 +25,12 @@ import (
 	"testing"
 )
 
+var (
+	lowPriority      = int32(0)
+	highPriority     = int32(10000)
+	extendedResource = v1.ResourceName("example.com/foo")
+)
+
 func TestValidateThresholds(t *testing.T) {
 	tests := []struct {
 		name    string

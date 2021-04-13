@@ -20,6 +20,7 @@ import (
 	"context"
 	"fmt"
 	v1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 	clientset "k8s.io/client-go/kubernetes"
 	"k8s.io/klog/v2"
 
@@ -33,7 +34,7 @@ import (
 // to calculate nodes' utilization and not the actual resource usage.
 func LowNodeUtilization(ctx context.Context, client clientset.Interface, strategy api.DeschedulerStrategy, nodes []*v1.Node, podEvictor *evictions.PodEvictor) {
 	// TODO: May be create a struct for the strategy as well, so that we don't have to pass along the all the params?
-	if err := validateLowNodeUtilizationParams(strategy.Params); err != nil {
+	if err := validateNodeUtilizationParams(strategy.Params); err != nil {
 		klog.ErrorS(err, "Invalid LowNodeUtilization parameters")
 		return
 	}
@@ -45,7 +46,7 @@ func LowNodeUtilization(ctx context.Context, client clientset.Interface, strateg
 
 	thresholds := strategy.Params.NodeResourceUtilizationThresholds.Thresholds
 	targetThresholds := strategy.Params.NodeResourceUtilizationThresholds.TargetThresholds
-	if err := validateStrategyConfig(thresholds, targetThresholds); err != nil {
+	if err := validateLowUtilizationStrategyConfig(thresholds, targetThresholds); err != nil {
 		klog.ErrorS(err, "LowNodeUtilization config is not valid")
 		return
 	}
@@ -129,6 +130,19 @@ func LowNodeUtilization(ctx context.Context, client clientset.Interface, strateg
 
 	evictable := podEvictor.Evictable(evictions.WithPriorityThreshold(thresholdPriority))
 
+	// stop if node utilization drops below target threshold or any of required capacity (cpu, memory, pods) is moved
+	continueEvictionCond := func(nodeUsage NodeUsage, totalAvailableUsage map[v1.ResourceName]*resource.Quantity) bool {
+		if !isNodeAboveTargetUtilization(nodeUsage) {
+			return false
+		}
+		for name := range totalAvailableUsage {
+			if totalAvailableUsage[name].CmpInt64(0) < 1 {
+				return false
+			}
+		}
+
+		return true
+	}
 
 	evictPodsFromTargetNodes(
 		ctx,
@@ -136,13 +150,15 @@ func LowNodeUtilization(ctx context.Context, client clientset.Interface, strateg
 		lowNodes,
 		podEvictor,
 		evictable.IsEvictable,
-		resourceNames)
+		resourceNames,
+		"LowNodeUtilization",
+		continueEvictionCond)
 
 	klog.V(1).InfoS("Total number of pods evicted", "evictedPods", podEvictor.TotalEvicted())
 }
 
-// validateStrategyConfig checks if the strategy's config is valid
-func validateStrategyConfig(thresholds, targetThresholds api.ResourceThresholds) error {
+// validateLowUtilizationStrategyConfig checks if the strategy's config is valid
+func validateLowUtilizationStrategyConfig(thresholds, targetThresholds api.ResourceThresholds) error {
 	// validate thresholds and targetThresholds config
 	if err := validateThresholds(thresholds); err != nil {
 		return fmt.Errorf("thresholds config is not valid: %v", err)
