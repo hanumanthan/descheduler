@@ -746,7 +746,7 @@ func TestValidateLowNodeUtilizationStrategyConfig(t *testing.T) {
 	}
 }
 
-func TestWithTaints(t *testing.T) {
+func TestLowNodeUtilizationWithTaints(t *testing.T) {
 	ctx := context.Background()
 	strategy := api.DeschedulerStrategy{
 		Enabled: true,
