@@ -68,17 +68,17 @@ type Namespaces struct {
 
 // Besides Namespaces ThresholdPriority and ThresholdPriorityClassName only one of its members may be specified
 type StrategyParameters struct {
-	NodeResourceUtilizationThresholds *NodeResourceUtilizationThresholds `json:"nodeResourceUtilizationThresholds,omitempty"`
-	NodeAffinityType                  []string                           `json:"nodeAffinityType,omitempty"`
-	PodsHavingTooManyRestarts         *PodsHavingTooManyRestarts         `json:"podsHavingTooManyRestarts,omitempty"`
-	PodLifeTime                       *PodLifeTime                       `json:"podLifeTime,omitempty"`
-	RemoveDuplicates                  *RemoveDuplicates                  `json:"removeDuplicates,omitempty"`
-	IncludeSoftConstraints            bool                               `json:"includeSoftConstraints"`
-	Namespaces                        *Namespaces                        `json:"namespaces"`
-	ThresholdPriority                 *int32                             `json:"thresholdPriority"`
-	ThresholdPriorityClassName        string                             `json:"thresholdPriorityClassName"`
-	LabelSelector                     *metav1.LabelSelector              `json:"labelSelector"`
-	NodeFit                           bool                               `json:"nodeFit"`
+	*NodeResourceUtilizationThresholds
+	*PodsHavingTooManyRestarts
+	*PodLifeTime
+	*RemoveDuplicates
+	Namespaces                 *Namespaces           `json:"namespaces"`
+	NodeAffinityType           []string              `json:"nodeAffinityType,omitempty"`
+	IncludeSoftConstraints     bool                  `json:"includeSoftConstraints"`
+	ThresholdPriority          *int32                `json:"thresholdPriority"`
+	ThresholdPriorityClassName string                `json:"thresholdPriorityClassName"`
+	LabelSelector              *metav1.LabelSelector `json:"labelSelector"`
+	NodeFit                    bool                  `json:"nodeFit"`
 }
 
 type Percentage float64

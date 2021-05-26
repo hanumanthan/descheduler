@@ -285,12 +285,12 @@ func Convert_api_RemoveDuplicates_To_v1alpha1_RemoveDuplicates(in *api.RemoveDup
 
 func autoConvert_v1alpha1_StrategyParameters_To_api_StrategyParameters(in *StrategyParameters, out *api.StrategyParameters, s conversion.Scope) error {
 	out.NodeResourceUtilizationThresholds = (*api.NodeResourceUtilizationThresholds)(unsafe.Pointer(in.NodeResourceUtilizationThresholds))
-	out.NodeAffinityType = *(*[]string)(unsafe.Pointer(&in.NodeAffinityType))
 	out.PodsHavingTooManyRestarts = (*api.PodsHavingTooManyRestarts)(unsafe.Pointer(in.PodsHavingTooManyRestarts))
 	out.PodLifeTime = (*api.PodLifeTime)(unsafe.Pointer(in.PodLifeTime))
 	out.RemoveDuplicates = (*api.RemoveDuplicates)(unsafe.Pointer(in.RemoveDuplicates))
-	out.IncludeSoftConstraints = in.IncludeSoftConstraints
 	out.Namespaces = (*api.Namespaces)(unsafe.Pointer(in.Namespaces))
+	out.NodeAffinityType = *(*[]string)(unsafe.Pointer(&in.NodeAffinityType))
+	out.IncludeSoftConstraints = in.IncludeSoftConstraints
 	out.ThresholdPriority = (*int32)(unsafe.Pointer(in.ThresholdPriority))
 	out.ThresholdPriorityClassName = in.ThresholdPriorityClassName
 	out.LabelSelector = (*v1.LabelSelector)(unsafe.Pointer(in.LabelSelector))
@@ -305,12 +305,12 @@ func Convert_v1alpha1_StrategyParameters_To_api_StrategyParameters(in *StrategyP
 
 func autoConvert_api_StrategyParameters_To_v1alpha1_StrategyParameters(in *api.StrategyParameters, out *StrategyParameters, s conversion.Scope) error {
 	out.NodeResourceUtilizationThresholds = (*NodeResourceUtilizationThresholds)(unsafe.Pointer(in.NodeResourceUtilizationThresholds))
-	out.NodeAffinityType = *(*[]string)(unsafe.Pointer(&in.NodeAffinityType))
 	out.PodsHavingTooManyRestarts = (*PodsHavingTooManyRestarts)(unsafe.Pointer(in.PodsHavingTooManyRestarts))
 	out.PodLifeTime = (*PodLifeTime)(unsafe.Pointer(in.PodLifeTime))
 	out.RemoveDuplicates = (*RemoveDuplicates)(unsafe.Pointer(in.RemoveDuplicates))
-	out.IncludeSoftConstraints = in.IncludeSoftConstraints
 	out.Namespaces = (*Namespaces)(unsafe.Pointer(in.Namespaces))
+	out.NodeAffinityType = *(*[]string)(unsafe.Pointer(&in.NodeAffinityType))
+	out.IncludeSoftConstraints = in.IncludeSoftConstraints
 	out.ThresholdPriority = (*int32)(unsafe.Pointer(in.ThresholdPriority))
 	out.ThresholdPriorityClassName = in.ThresholdPriorityClassName
 	out.LabelSelector = (*v1.LabelSelector)(unsafe.Pointer(in.LabelSelector))

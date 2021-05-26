@@ -70,17 +70,17 @@ type Namespaces struct {
 // TODO(jchaloup): move Namespaces ThresholdPriority and ThresholdPriorityClassName to individual strategies
 //  once the policy version is bumped to v1alpha2
 type StrategyParameters struct {
-	NodeResourceUtilizationThresholds *NodeResourceUtilizationThresholds
-	NodeAffinityType                  []string
-	PodsHavingTooManyRestarts         *PodsHavingTooManyRestarts
-	PodLifeTime                       *PodLifeTime
-	RemoveDuplicates                  *RemoveDuplicates
-	IncludeSoftConstraints            bool
-	Namespaces                        *Namespaces
-	ThresholdPriority                 *int32
-	ThresholdPriorityClassName        string
-	LabelSelector                     *metav1.LabelSelector
-	NodeFit                           bool
+	*NodeResourceUtilizationThresholds
+	*PodsHavingTooManyRestarts
+	*PodLifeTime
+	*RemoveDuplicates
+	Namespaces                 *Namespaces
+	NodeAffinityType           []string
+	IncludeSoftConstraints     bool
+	ThresholdPriority          *int32
+	ThresholdPriorityClassName string
+	LabelSelector              *metav1.LabelSelector
+	NodeFit                    bool
 }
 
 type Percentage float64

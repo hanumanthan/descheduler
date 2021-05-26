@@ -5,8 +5,7 @@ strategies:
   "LowNodeUtilization":
     enabled: true
     params:
-      nodeResourceUtilizationThresholds:
-        thresholds:
-          "memory": 20
-        targetThresholds:
-          "memory": 70
+      thresholds:
+        "memory": 20
+      targetThresholds:
+        "memory": 70

@@ -107,11 +107,11 @@ strategies:
   "LowNodeUtilization":
     enabled: true
     params:
-      nodeResourceUtilizationThresholds:
-        thresholds:
-          "memory": 20
-        targetThresholds:
-          "memory": 70
+      thresholds:
+        "memory": 20
+      targetThresholds:
+        "memory": 70
+
 ```
 
 #### Balance low utilization nodes
@@ -126,9 +126,9 @@ strategies:
   "HighNodeUtilization":
     enabled: true
     params:
-      nodeResourceUtilizationThresholds:
-        thresholds:
-          "memory": 20
+      thresholds:
+        "memory": 20
+
 ```
 
 ### Autoheal Node Problems
