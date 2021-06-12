@@ -26,8 +26,8 @@ import (
 type DeschedulerPolicy struct {
 	metav1.TypeMeta
 
-	// Strategies
-	Strategies StrategyList
+	// Profiles
+	Profiles []DeschedulerProfile
 
 	// NodeSelector for a set of nodes to operate over
 	NodeSelector *string
@@ -45,12 +45,23 @@ type DeschedulerPolicy struct {
 	MaxNoOfPodsToEvictPerNode *int
 }
 
+type DeschedulerProfile struct {
+	// Name
+	Name string
+
+	//Enabled
+	Enabled *bool
+
+	// Strategies
+	Strategies StrategyList
+}
+
 type StrategyName string
 type StrategyList map[StrategyName]DeschedulerStrategy
 
 type DeschedulerStrategy struct {
 	// Enabled or disabled
-	Enabled bool
+	Enabled *bool
 
 	// Weight
 	Weight int
@@ -70,17 +81,17 @@ type Namespaces struct {
 // TODO(jchaloup): move Namespaces ThresholdPriority and ThresholdPriorityClassName to individual strategies
 //  once the policy version is bumped to v1alpha2
 type StrategyParameters struct {
-	NodeResourceUtilizationThresholds *NodeResourceUtilizationThresholds
-	NodeAffinityType                  []string
-	PodsHavingTooManyRestarts         *PodsHavingTooManyRestarts
-	PodLifeTime                       *PodLifeTime
-	RemoveDuplicates                  *RemoveDuplicates
-	IncludeSoftConstraints            bool
-	Namespaces                        *Namespaces
-	ThresholdPriority                 *int32
-	ThresholdPriorityClassName        string
-	LabelSelector                     *metav1.LabelSelector
-	NodeFit                           bool
+	*NodeResourceUtilizationThresholds
+	*PodsHavingTooManyRestarts
+	*PodLifeTime
+	*RemoveDuplicates
+	Namespaces                 *Namespaces
+	NodeAffinityType           []string
+	IncludeSoftConstraints     bool
+	ThresholdPriority          *int32
+	ThresholdPriorityClassName string
+	LabelSelector              *metav1.LabelSelector
+	NodeFit                    bool
 }
 
 type Percentage float64
